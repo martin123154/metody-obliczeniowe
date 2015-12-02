@@ -73,7 +73,7 @@ W dod(W x, W y)
 	return zwrot;
 }
 
-float pot(float b, float p)
+float pot(float b, int p)
 {
 	float w=1;
 	int i;
@@ -99,12 +99,13 @@ int main()
 	
 	printf("Wprowadz funkcje. Jaka bedzie najwyzsza potega?\n");
 	scanf("%d", &potega);
-	tabwspf=(float*)malloc(potega*sizeof(float));
+	tabwspf=(float*)malloc((potega+1)*sizeof(float));
 	for (i=0;i<=potega;i++)
 	{
 		printf("Podaj wspolczynnik przy potedze %d\n",i);
-		scanf("%f", &w);
-		tabwspf[i]=w;
+		float in;
+		scanf("%f", &in);
+		tabwspf[i]=in;
 	}
 	printf("Czy chcesz uzyc trygonometrii? (1-tak/0-nie)\n");
 	int odp;
@@ -151,21 +152,34 @@ int main()
 	tabY=(float*)malloc(iloscP*sizeof(float));	
 	
 	tabX[0]=przedzialA;
+	if(tabX[0]==0)
+	{
+			tabX[0]=tabX[0]+0.0000001;
+	}
 	tabX[iloscP-1]=przedzialB;
+	if(tabX[iloscP-1]==0)
+	{
+			tabX[iloscP-1]=tabX[iloscP-1]+0.0000001;
+	}
 	float il=(float)iloscP;
 	float interwal=(przedzialB-przedzialA)/(il-1);
 	
 	for(i=0;i<iloscP-1;i++)
 	{
 		tabX[i]=przedzialA+i*interwal;
+		if(tabX[i]==0)
+		{
+			tabX[i]=tabX[i]+0.0000001;
+		}
 	}
 	
 	float sumaY;
 	for(i=0;i<iloscP;i++)//dla kazdego X
 	{
-		sumaY=0;
+		sumaY=0.0;
 		for(j=0;j<=potega;j++)//pozbieraj w sume wartosc Y
 		{
+			float jf=(float)j;
 			sumaY=sumaY+(pot(tabX[i],j))*(tabwspf[j]);
 		}
 		tabY[i]=sumaY+
@@ -260,4 +274,3 @@ int main()
 	getchar();
 	return 0;
 }
-
